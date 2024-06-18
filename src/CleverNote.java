@@ -23,7 +23,7 @@ public class CleverNote extends Frame
         menuBar = new MenuBar();
         file = new Menu("File");
         edit = new Menu("Edit");
-        view = new Menu("view");
+        view = new Menu("View");
         settingsMenu = new Menu("Settings");
 
         // Initialize menu items

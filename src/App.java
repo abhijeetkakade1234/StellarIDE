@@ -1,5 +1,6 @@
 public class App {
     public static void main(String[] args) {
-        CleverNote cleverNote = new CleverNote();
+        CleverNote app = new CleverNote();
+        app.setVisible(true);
     }
 }
