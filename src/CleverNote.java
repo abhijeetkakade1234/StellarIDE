@@ -1,16 +1,12 @@
 
-import java.awt.BorderLayout;
-import java.awt.Frame;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.TextArea;
+import java.awt.*;
+import javax.swing.*;
 
-public class CleverNote extends Frame
+public class CleverNote extends JFrame
 {
-    MenuBar menuBar;
-    TextArea textArea;
-    Menu file, edit, view, settingsMenu;
+    JMenuBar menuBar;
+    JTextArea textArea;
+    JMenu file, edit, view, settingsMenu;
     
     public CleverNote()
     {
@@ -20,18 +16,18 @@ public class CleverNote extends Frame
         setLayout(new BorderLayout());
 
         // Initialize the menu bar and menus
-        menuBar = new MenuBar();
-        file = new Menu("File");
-        edit = new Menu("Edit");
-        view = new Menu("View");
-        settingsMenu = new Menu("Settings");
+        menuBar = new JMenuBar();
+        file = new JMenu("File");
+        edit = new JMenu("Edit");
+        view = new JMenu("View");
+        settingsMenu = new JMenu("Settings");
 
         // Initialize menu items
-        MenuItem newtab = new MenuItem("New Tab");
-        MenuItem open = new MenuItem("Open");
-        MenuItem save = new MenuItem("Save");
-        MenuItem saveas = new MenuItem("Save As");
-        MenuItem exit = new MenuItem("Exit");
+        JMenuItem newtab = new JMenuItem("New Tab");
+        JMenuItem open = new JMenuItem("Open");
+        JMenuItem save = new JMenuItem("Save");
+        JMenuItem saveas = new JMenuItem("Save As");
+        JMenuItem exit = new JMenuItem("Exit");
 
         // Add menu items to the File menu
         file.add(newtab);
@@ -50,11 +46,15 @@ public class CleverNote extends Frame
 
 
         // Set the menu bar for the frame
-        setMenuBar(menuBar);
+        setJMenuBar(menuBar);
 
         // Initialize the text area and add it to the center of the BorderLayout
-        textArea = new TextArea();
-        textArea.setSize(getPreferredSize());
+        textArea = new JTextArea();
         add(textArea, BorderLayout.CENTER);
+
+
+         // Set default close operation
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
 }
