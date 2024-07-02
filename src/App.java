@@ -1,6 +1,6 @@
 public class App {
     public static void main(String[] args) {
-        CleverNote app = new CleverNote();
+        StellarIDE app = new StellarIDE();
         app.setVisible(true);
     }
 }

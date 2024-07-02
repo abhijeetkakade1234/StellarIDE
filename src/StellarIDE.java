@@ -1,18 +1,19 @@
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class CleverNote extends JFrame
+public class StellarIDE extends JFrame implements ActionListener
 {
     JMenuBar menuBar;
     JTextArea textArea;
     JMenu file, edit, view, settingsMenu;
     
-    public CleverNote()
+    public StellarIDE()
     {
         setSize(500, 500);
         setVisible(true);
-        setTitle("CleverNote");
+        setTitle("StellarIDE");
         setLayout(new BorderLayout());
 
         // Initialize the menu bar and menus
@@ -42,9 +43,14 @@ public class CleverNote extends JFrame
         menuBar.add(view);
         menuBar.add(settingsMenu);
 
+        // Add action listeners to the menu items
+        newtab.addActionListener(this);
+        open.addActionListener(this);
+        save.addActionListener(this);
+        saveas.addActionListener(this);
+        exit.addActionListener(this);
 
-
-
+    
         // Set the menu bar for the frame
         setJMenuBar(menuBar);
 
@@ -56,5 +62,20 @@ public class CleverNote extends JFrame
          // Set default close operation
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == "New Tab") {  
+            // Do something
+        } else if (e.getSource() == "Open") {
+            // Do something
+        } else if (e.getSource() == "Save") {
+            // Do something
+        } else if (e.getSource() == "Save As") {
+            // Do something
+        } else if (e.getSource() == "Exit") {
+            // Do something
+        }
+    }   
 
 }
