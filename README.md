@@ -15,6 +15,19 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
 - **Built-in Terminal**
   - Access to a command-line interface directly within the IDE.
 
+## Prerequisites
+
+Before installing StellarIDE, ensure that you have the Java Development Kit (JDK) installed on your system.
+
+1. **Download JDK**
+   - Visit the [Oracle JDK download page](https://www.oracle.com/java/technologies/javase-downloads.html) or the [OpenJDK download page](https://openjdk.java.net/install/).
+   - Choose the appropriate version for your operating system and follow the installation instructions provided on the website.
+
+2. **Verify JDK Installation**
+   - Open a terminal or command prompt.
+   - Type `java -version` and press Enter.
+   - You should see output displaying the Java version installed on your system.
+
 ## Getting Started
 
 To start using StellarIDE, follow these simple steps:
