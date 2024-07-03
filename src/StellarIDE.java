@@ -57,8 +57,20 @@ public class StellarIDE implements ActionListener {
         // Initialize the tabbed pane and add it to the center of the BorderLayout
         tabbedPane = new JTabbedPane();
         textArea = new JTextArea();
-        tabbedPane.add("Tab 1", textArea);
         frame.add(tabbedPane, BorderLayout.CENTER);
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem closeTab = new JMenuItem("close tab");
+        popup.add(closeTab);
+        tabbedPane.setComponentPopupMenu(popup);
+        // Close tab Event Listener
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                // Handle tab selection
+                if(e.getSource().equals("closeTab")){
+                   
+                }
+            }
+        });
 
         // Set default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,4 +92,5 @@ public class StellarIDE implements ActionListener {
             frame.dispose(); // Close the application
         }
     }
+
 }
