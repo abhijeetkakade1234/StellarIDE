@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class StellarIDE implements ActionListener {
     JMenuBar menuBar;
-    public JTextArea textArea;
+    public JTextPane  editor;
     JMenu file, edit, prettier, settingsMenu;
     JFrame frame;
     JTabbedPane tabbedPane;
@@ -17,6 +17,73 @@ public class StellarIDE implements ActionListener {
         frame.setTitle("StellarIDE");
         frame.setLayout(new BorderLayout());
 
+        // intialize the menu bar
+        initialize();
+        
+
+        // Add menus to the menu bar
+        menuBar.add(file);
+        menuBar.add(edit);
+        menuBar.add(prettier);
+        menuBar.add(settingsMenu, BorderLayout.SOUTH);
+        
+        // Set the menu bar for the frame
+        frame.setJMenuBar(menuBar);
+        
+        // Initialize the tabbed pane and add it to the center of the BorderLayout
+        tabbedPane = new JTabbedPane();
+        editor = new JTextPane ();
+        frame.add(tabbedPane, BorderLayout.CENTER);
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem closeTab = new JMenuItem("close tab");
+        popup.add(closeTab);
+        tabbedPane.setComponentPopupMenu(popup);
+        // Close tab Event Listener
+        closeTab.addActionListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                tabbedPane.remove(selectedIndex);
+            }
+        });
+
+        // Syntax Highlighter
+        editor.addKeyListener( (KeyListener) new SyntaxHighlighter(){
+                @SuppressWarnings("unused")
+                public void keyTyped(KeyEvent e) { 
+                   // syntaxHighlight();
+                }
+        });
+        
+        // Set default close operation
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem source = (JMenuItem) e.getSource();
+        // using ruleswitch which was released in Java 17
+        switch (source.getText()) {
+            case "New Tab" -> {
+                i++;
+                tabbedPane.add("Untitled "+i, new JTextPane());
+            }
+            // Handle open action
+            case "Open" -> {
+            }
+            // Handle save action
+            case "Save" -> {
+            }
+            // Handle save as action
+            case "Save As" -> {
+            }
+            case "Exit" -> frame.dispose(); // Close the application
+            default -> {
+                // do nothing
+            }
+        }
+    }
+    private  void initialize() {
         // Initialize the menu bar and menus
         menuBar = new JMenuBar();
         file = new JMenu("File");
@@ -38,65 +105,12 @@ public class StellarIDE implements ActionListener {
         file.add(saveAs);  
         file.add(exit);
 
-        // Add menus to the menu bar
-        menuBar.add(file);
-        menuBar.add(edit);
-        menuBar.add(prettier);
-        menuBar.add(settingsMenu, BorderLayout.SOUTH);
-        
-        // Set the menu bar for the frame
-        frame.setJMenuBar(menuBar);
-        
-        // Initialize the tabbed pane and add it to the center of the BorderLayout
-        tabbedPane = new JTabbedPane();
-        textArea = new JTextArea();
-        frame.add(tabbedPane, BorderLayout.CENTER);
-        JPopupMenu popup = new JPopupMenu();
-        JMenuItem closeTab = new JMenuItem("close tab");
-        popup.add(closeTab);
-        tabbedPane.setComponentPopupMenu(popup);
-        // Close tab Event Listener
-        closeTab.addActionListener(e -> {
-            int selectedIndex = tabbedPane.getSelectedIndex();
-            if (selectedIndex >= 0) {
-                tabbedPane.remove(selectedIndex);
-            }
-        });
-        
-        // Set default close operation
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
         // Add action listeners to the menu items
         newTab.addActionListener(this);
         open.addActionListener(this);
         save.addActionListener(this);
         saveAs.addActionListener(this);
         exit.addActionListener(this);
-    }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JMenuItem source = (JMenuItem) e.getSource();
-        // using ruleswitch which was released in Java 17
-        switch (source.getText()) {
-            case "New Tab" -> {
-                i++;
-                tabbedPane.add("Untitled "+i, new JTextArea());
-            }
-            // Handle open action
-            case "Open" -> {
-            }
-            // Handle save action
-            case "Save" -> {
-            }
-            // Handle save as action
-            case "Save As" -> {
-            }
-            case "Exit" -> frame.dispose(); // Close the application
-            default -> {
-                // do nothing
-            }
-        }
-    }
+   }
 }
