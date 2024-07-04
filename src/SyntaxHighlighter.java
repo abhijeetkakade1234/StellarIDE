@@ -1,6 +1,6 @@
 public class SyntaxHighlighter {
     
-    public static void syntaxHighlight() {
+    /*public static void syntaxHighlight() {
            // check in textArea  for syntax
            String[] otherKeywords = {
             "abstract", "assert", "break", "case", "catch", "class", "const", 
@@ -37,5 +37,5 @@ public class SyntaxHighlighter {
         };
         
         
-    }
+    }*/
 }

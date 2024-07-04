@@ -37,23 +37,16 @@ public class StellarIDE implements ActionListener {
         file.add(save);
         file.add(saveAs);  
         file.add(exit);
-        
+
         // Add menus to the menu bar
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(prettier);
         menuBar.add(settingsMenu, BorderLayout.SOUTH);
-
-        // Add action listeners to the menu items
-        newTab.addActionListener(this);
-        open.addActionListener(this);
-        save.addActionListener(this);
-        saveAs.addActionListener(this);
-        exit.addActionListener(this);
-
+        
         // Set the menu bar for the frame
         frame.setJMenuBar(menuBar);
-
+        
         // Initialize the tabbed pane and add it to the center of the BorderLayout
         tabbedPane = new JTabbedPane();
         textArea = new JTextArea();
@@ -63,34 +56,47 @@ public class StellarIDE implements ActionListener {
         popup.add(closeTab);
         tabbedPane.setComponentPopupMenu(popup);
         // Close tab Event Listener
-        tabbedPane.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                // Handle tab selection
-                if(e.getSource().equals("closeTab")){
-                   
-                }
+        closeTab.addActionListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            if (selectedIndex >= 0) {
+                tabbedPane.remove(selectedIndex);
             }
         });
-
+        
         // Set default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        // Add action listeners to the menu items
+        newTab.addActionListener(this);
+        open.addActionListener(this);
+        save.addActionListener(this);
+        saveAs.addActionListener(this);
+        exit.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem source = (JMenuItem) e.getSource();
-        if (source.getText().equals("New Tab")) {
-            i++;
-            tabbedPane.add("Untitled "+i, new JTextArea());
-        } else if (source.getText().equals("Open")) {
+        // using ruleswitch which was released in Java 17
+        switch (source.getText()) {
+            case "New Tab" -> {
+                i++;
+                tabbedPane.add("Untitled "+i, new JTextArea());
+            }
             // Handle open action
-        } else if (source.getText().equals("Save")) {
+            case "Open" -> {
+            }
             // Handle save action
-        } else if (source.getText().equals("Save As")) {
+            case "Save" -> {
+            }
             // Handle save as action
-        } else if (source.getText().equals("Exit")) {
-            frame.dispose(); // Close the application
+            case "Save As" -> {
+            }
+            case "Exit" -> frame.dispose(); // Close the application
+            default -> {
+                // do nothing
+            }
         }
     }
-
 }
