@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class StellarIDE implements ActionListener {
     JMenuBar menuBar;
@@ -8,7 +10,7 @@ public class StellarIDE implements ActionListener {
     JMenu file, edit, prettier, settingsMenu;
     JFrame frame;
     JTabbedPane tabbedPane;
-    int i = 0;
+    
 
     public StellarIDE() {
         frame = new JFrame("Stellar IDE");
@@ -20,7 +22,6 @@ public class StellarIDE implements ActionListener {
         // intialize the menu bar
         initialize();
         
-
         // Add menus to the menu bar
         menuBar.add(file);
         menuBar.add(edit);
@@ -45,14 +46,6 @@ public class StellarIDE implements ActionListener {
                 tabbedPane.remove(selectedIndex);
             }
         });
-
-        // Syntax Highlighter
-        editor.addKeyListener( (KeyListener) new SyntaxHighlighter(){
-                @SuppressWarnings("unused")
-                public void keyTyped(KeyEvent e) { 
-                   // syntaxHighlight();
-                }
-        });
         
         // Set default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +58,13 @@ public class StellarIDE implements ActionListener {
         // using ruleswitch which was released in Java 17
         switch (source.getText()) {
             case "New Tab" -> {
-                i++;
-                tabbedPane.add("Untitled "+i, new JTextPane());
+                String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab", "file name", JOptionPane.PLAIN_MESSAGE) ;
+                if (editorName.length() > 0) {
+                    JTextPane newEditor = new JTextPane();
+                    tabbedPane.add(editorName +".java", newEditor);
+                    addSyntaxHighlighting(newEditor);
+                }
+                JOptionPane.showMessageDialog(frame, "Incorrect file name", "alert", JOptionPane.WARNING_MESSAGE);
             }
             // Handle open action
             case "Open" -> {
@@ -111,6 +109,22 @@ public class StellarIDE implements ActionListener {
         save.addActionListener(this);
         saveAs.addActionListener(this);
         exit.addActionListener(this);
-
    }
+
+   private void addSyntaxHighlighting(JTextPane textPane) {
+        textPane.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            }
+        });
+    } 
 }

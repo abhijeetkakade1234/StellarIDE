@@ -27,20 +27,22 @@ public class SyntaxHighlighter {
         
         
     public static void applySyntaxHighlight(JTextPane textPane) {
-
+        StyledDocument doc = textPane.getStyledDocument();
+        String text = textPane.getText();
 
         // Apply styles for each pattern
-        /* applyStyles(doc, text, KEYWORDS_PATTERN, Color.RED);
+        applyStyles(doc, text, KEYWORDS_PATTERN, Color.RED);
         applyStyles(doc, text, DATA_TYPES_PATTERN, Color.BLUE);
         applyStyles(doc, text, NON_PRIMITIVE_TYPES_PATTERN, Color.GREEN);
         applyStyles(doc, text, COLLECTIONS_CLASSES_PATTERN, Color.CYAN);
         applyStyles(doc, text, BOOLEAN_LITERALS_PATTERN, Color.MAGENTA);
-        applyStyles(doc, text, LOGICAL_OPERATORS_PATTERN, Color.DARK_GRAY); */
+        applyStyles(doc, text, LOGICAL_OPERATORS_PATTERN, Color.DARK_GRAY); 
     }
 
-    private static void applyStyle(StyledDocument doc, String text,Pattern pattern, Color color) {
+    private static void applyStyles(StyledDocument doc, String text,Pattern pattern, Color color) {
         Matcher matcher = pattern.matcher(text);
         Style style = doc.addStyle("", null);
+       
 
         while (matcher.find()) {
             doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), style, false);
