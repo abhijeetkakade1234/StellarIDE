@@ -9,7 +9,7 @@ public class StellarIDE implements ActionListener {
     public JTextPane  editor;
     JMenu file, edit, prettier, settingsMenu;
     JFrame frame;
-    JTabbedPane tabbedPane;
+    JTabbedPane tabbedPane; 
     
 
     public StellarIDE() {
@@ -62,9 +62,10 @@ public class StellarIDE implements ActionListener {
                 if (editorName.length() > 0) {
                     JTextPane newEditor = new JTextPane();
                     tabbedPane.add(editorName +".java", newEditor);
-                    addSyntaxHighlighting(newEditor);
+                    // addSyntaxHighlighting(newEditor);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Incorrect file name", "alert", JOptionPane.WARNING_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(frame, "Incorrect file name", "alert", JOptionPane.WARNING_MESSAGE);
             }
             // Handle open action
             case "Open" -> {
