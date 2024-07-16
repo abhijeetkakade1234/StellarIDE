@@ -7,13 +7,18 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
 **StellarIDE** is under active development, and we are excited to bring you a host of powerful features soon. Here are some core functionalities you can expect:
 
 - **Intelligent Code Completion**
-   - Autocomplete suggestions for Java syntax and common libraries.
+  - Autocomplete suggestions for Java syntax and common libraries. *(Not Started)*
+  
 - **Syntax Highlighting**
-  - Clear and distinct highlighting for keywords, variables, and other code elements.
+  - Clear and distinct highlighting for keywords, variables, and other code elements. *(Available beta feature)*
+  
 - **Project Management**
-  - Organize and manage multiple Java projects with ease.
+  - Organize and manage multiple Java projects with ease. *(comming soon)*
+  
 - **Built-in Terminal**
-  - Access to a command-line interface directly within the IDE.
+  - Access to a command-line interface directly within the IDE. *(comming soon)*
+
+
 
 ## Prerequisites
 
