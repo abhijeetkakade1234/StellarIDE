@@ -87,7 +87,7 @@ public class StellarIDE implements ActionListener {
         menuBar = new JMenuBar();
         file = new JMenu("File");
         edit = new JMenu("Edit");
-        prettier = new JMenu("prettier");
+        prettier = new JMenu("Prettier");
         settingsMenu = new JMenu("Settings");
 
         // Initialize menu items
