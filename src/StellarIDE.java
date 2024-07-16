@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class StellarIDE implements ActionListener {
@@ -58,13 +57,14 @@ public class StellarIDE implements ActionListener {
         // using ruleswitch which was released in Java 17
         switch (source.getText()) {
             case "New Tab" -> {
-                String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab", "file name", JOptionPane.PLAIN_MESSAGE) ;
-                if (editorName.length() > 0) {
+                String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab", "File Name", JOptionPane.PLAIN_MESSAGE);
+                if (editorName != null && editorName.length() > 0) {
                     JTextPane newEditor = new JTextPane();
-                    tabbedPane.add(editorName +".java", newEditor);
-                    // addSyntaxHighlighting(newEditor);
+                    newEditor.setBackground(new Color(30, 30, 30)); // Very dark gray, almost black
+                    tabbedPane.add(editorName + ".java", newEditor);
+                    addSyntaxHighlighting(newEditor);
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Incorrect file name", "alert", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Incorrect file name", "Alert", JOptionPane.WARNING_MESSAGE);
                 }
             }
             // Handle open action
@@ -112,19 +112,29 @@ public class StellarIDE implements ActionListener {
         exit.addActionListener(this);
    }
 
+   /**
+    * Add syntax highlighting to the editor
+    *
+    * @param  textPane	JTextPane to apply syntax highlighting
+    * @return         	void
+    */
    private void addSyntaxHighlighting(JTextPane textPane) {
+    // Add syntax highlighting to the editor
         textPane.getDocument().addDocumentListener(new DocumentListener() {
+
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                SwingUtilities.invokeLater(() -> SyntaxHighlighter.applySyntaxHighlight(textPane));
             }
+
             @Override
-            public void removeUpdate(DocumentEvent e) {
-                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                SwingUtilities.invokeLater(() -> SyntaxHighlighter.applySyntaxHighlight(textPane));
             }
+
             @Override
-            public void changedUpdate(DocumentEvent e) {
-                SyntaxHighlighter.applySyntaxHighlight(textPane);
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                // Not needed for plain text components
             }
         });
     } 
