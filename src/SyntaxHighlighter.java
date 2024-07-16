@@ -11,10 +11,10 @@ public class SyntaxHighlighter{
     // Add a color for default text
     private static final Color DEFAULT_TEXT_COLOR = new Color(212, 212, 212); // Light gray
 
-    // check in textArea  for syntax
+    // Existing patterns (they look good, no changes needed)
     private static final Pattern KEYWORDS_PATTERN = Pattern.compile(
         "\\b(abstract|assert|break|case|catch|class|const|continue|default|do|else|enum|extends|final|finally|for|goto|if|implements|import|instanceof|interface|native|new|null|package|private|protected|public|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b");
-    
+
     private static final Pattern DATA_TYPES_PATTERN = Pattern.compile(
         "\\b(byte|short|int|long|float|double|char|boolean)\\b");
 
@@ -28,8 +28,22 @@ public class SyntaxHighlighter{
         "\\b(true|false)\\b");
 
     private static final Pattern LOGICAL_OPERATORS_PATTERN = Pattern.compile(
-            "(!|&&|\\|\\||\\^|~|\\?|:)|([^&|]&[^&|])|([^&|]\\|[^&|])");
-        
+        "(!|&&|\\|\\||\\^|~|\\?|:)|([^&|]&[^&|])|([^&|]\\|[^&|])");
+
+    // New patterns to add
+    private static final Pattern STRING_LITERAL_PATTERN = Pattern.compile(
+        "\"([^\"\\\\]|\\\\.)*\"");
+
+    private static final Pattern NUMERIC_LITERAL_PATTERN = Pattern.compile(
+        "\\b([0-9]+\\.?[0-9]*|\\.?[0-9]+)([eE][-+]?[0-9]+)?[fFdDlL]?\\b|\\b0x[0-9a-fA-F]+\\b");
+
+    private static final Pattern METHOD_CALL_PATTERN = Pattern.compile(
+        "\\b[a-zA-Z_$][a-zA-Z_$0-9]*\\s*\\(");
+
+    private static final Pattern COMMENT_PATTERN = Pattern.compile(
+        "//.*|/\\*[\\s\\S]*?\\*/");
+
+
     /**
      * Applies syntax highlighting to the given JTextPane.
      *
@@ -46,14 +60,20 @@ public class SyntaxHighlighter{
         StyleConstants.setForeground(defaultStyle, DEFAULT_TEXT_COLOR);
         doc.setCharacterAttributes(0, text.length(), defaultStyle, true);
 
-        // Apply styles for each pattern
-        applyStyles(doc, text, KEYWORDS_PATTERN, new Color(197, 134, 192));     // Soft purple
-        applyStyles(doc, text, DATA_TYPES_PATTERN, new Color(86, 156, 214));    // Bright blue
+
+        // Apply styles in the correct order && Colors for syntax highlighting
+        applyStyles(doc, text, COMMENT_PATTERN, new Color(106, 153, 85)); // soft green
+        applyStyles(doc, text, STRING_LITERAL_PATTERN, new Color(206, 145, 120)); // Soft orange
+        applyStyles(doc, text, KEYWORDS_PATTERN, new Color(197, 134, 192)); // Soft purple
+        applyStyles(doc, text, DATA_TYPES_PATTERN, new Color(86, 156, 214)); // Bright blue
         applyStyles(doc, text, NON_PRIMITIVE_TYPES_PATTERN, new Color(78, 201, 176)); // Cyan
         applyStyles(doc, text, COLLECTIONS_CLASSES_PATTERN, new Color(220, 220, 170)); // Pale yellow
         applyStyles(doc, text, BOOLEAN_LITERALS_PATTERN, new Color(236, 118, 0)); // Orange
         applyStyles(doc, text, LOGICAL_OPERATORS_PATTERN, new Color(255, 123, 114)); // Soft coral
+        applyStyles(doc, text, NUMERIC_LITERAL_PATTERN, new Color(181, 206, 168)); // Light green
+        applyStyles(doc, text, METHOD_CALL_PATTERN, new Color(230, 219, 116)); // Light yellow
 
+        // Repaint the text pane
         textPane.repaint();
     }
 
@@ -65,21 +85,12 @@ public class SyntaxHighlighter{
      * @param  pattern the pattern to match in the text
      * @param  color   the color to set for the matched pattern
      */
-    @SuppressWarnings("unused")
     private static void applyStyles(StyledDocument doc, String text,Pattern pattern, Color color) {
         Matcher matcher = pattern.matcher(text);
         Style style = doc.addStyle("", null);
        StyleConstants.setForeground(style, color);
 
         while (matcher.find()) {
-            int start = matcher.start();
-            int end = matcher.end();
-            
-            // For & and |, we need to adjust the highlighting
-            if (matcher.group().length() == 3) {
-                start++;
-                end--;
-            }
             doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), style, false);
         }
     }
