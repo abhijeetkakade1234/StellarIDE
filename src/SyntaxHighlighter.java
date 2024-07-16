@@ -30,6 +30,11 @@ public class SyntaxHighlighter{
     private static final Pattern LOGICAL_OPERATORS_PATTERN = Pattern.compile(
             "(!|&&|\\|\\||\\^|~|\\?|:)|([^&|]&[^&|])|([^&|]\\|[^&|])");
         
+    /**
+     * Applies syntax highlighting to the given JTextPane.
+     *
+     * @param  textPane  the JTextPane to apply syntax highlighting to
+     */
     public static void applySyntaxHighlight(JTextPane textPane) {
         
         StyledDocument doc = textPane.getStyledDocument();
@@ -52,6 +57,15 @@ public class SyntaxHighlighter{
         textPane.repaint();
     }
 
+    /**
+     * Apply styles to the given text based on the specified pattern and color.
+     *
+     * @param  doc     the styled document to apply styles to
+     * @param  text    the text to which styles are applied
+     * @param  pattern the pattern to match in the text
+     * @param  color   the color to set for the matched pattern
+     */
+    @SuppressWarnings("unused")
     private static void applyStyles(StyledDocument doc, String text,Pattern pattern, Color color) {
         Matcher matcher = pattern.matcher(text);
         Style style = doc.addStyle("", null);
