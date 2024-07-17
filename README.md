@@ -19,7 +19,9 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
   - Access to a command-line interface directly within the IDE. *(comming soon)*
 - **Themes**
   - Change the theme of the IDE. *(beta testing)*
-      - New themes can be added on request.
+    - New themes can be added on request.
+    - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions) section on GitHub.
+
 
 
 
