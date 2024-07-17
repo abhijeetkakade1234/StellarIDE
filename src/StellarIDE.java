@@ -26,7 +26,7 @@ public class StellarIDE implements ActionListener {
         menuBar.add(edit);
         // menuBar.add(prettier);
         menuBar.add(settingsMenu);
-        menuBar.add(themes);
+        
         
         // Set the menu bar for the frame
         frame.setJMenuBar(menuBar);
@@ -68,27 +68,8 @@ public class StellarIDE implements ActionListener {
                 }
             }
             // Handle themes
-            case "Themes" -> { // TODO: create a method to switch themes here add down code in that
-                // Toggle between dark gray and white backgrounds
-                if (backgroundColor.equals(new Color(30, 30, 30))) {
-                    backgroundColor = Color.WHITE; // White background
-                    // themes = new JButton("White Mode");
-                } else {
-                    backgroundColor = new Color(30, 30, 30); // Dark gray background
-                    // themes = new JButton("Dark Mode");
-                }
-                
-                // Update background color of existing editors
-                for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-                    Component comp = tabbedPane.getComponentAt(i);
-                    if (comp instanceof JTextPane editor) {
-                        editor.setBackground(backgroundColor);
-                    }
-                }
-                
-                // Repaint the frame to apply the new theme
-                frame.repaint();
-            }
+            case "Dark Mode" -> themeChange("dark");
+            case "White Mode" -> themeChange("white");
             // Handle open action
             case "Open" -> {
             }
@@ -132,6 +113,7 @@ public class StellarIDE implements ActionListener {
         file.add(exit);
 
         // Add menu items to the Theme menu
+        settingsMenu.add(themes);
         themes.add(darkMode);
         themes.add(whiteMode);
 
@@ -171,4 +153,27 @@ public class StellarIDE implements ActionListener {
             }
         });
     } 
+    
+    /**
+     * Apply the selected theme to the IDE, changing the background color of all tabs.
+     *
+     * @param  theme   the theme to apply ("dark" or "white")
+     * @return         void
+     */
+    private void themeChange(String theme) {
+        if (theme.equals("dark")) {
+            backgroundColor = new Color(30, 30, 30); // Dark gray
+        } else if (theme.equals("white")) {
+            backgroundColor = Color.WHITE; // White
+        }
+
+        // Apply the background color to all open tabs
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            JTextPane editor = (JTextPane) tabbedPane.getComponentAt(i);
+            editor.setBackground(backgroundColor);
+        }
+
+        // Update the background color of new tabs
+        frame.repaint();
+    }
 }

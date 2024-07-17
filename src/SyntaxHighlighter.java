@@ -66,13 +66,13 @@ public class SyntaxHighlighter{
      * @param  pattern the pattern to match in the text
      * @param  color   the color to set for the matched pattern
      */
-    private static void applyStyles(StyledDocument doc, String text, String[] syntaxs, Color color) {
-        Style style = doc.addStyle("", null);
-       StyleConstants.setForeground(style, color);
+     private static void applyStyles(StyledDocument doc, String text, String[] syntaxs, Color color) {
+        Style style = doc.addStyle("customStyle", null);
+        StyleConstants.setForeground(style, color);
 
-       for (String syntax : syntaxs) {
-        Pattern pattern = Pattern.compile("\\b" + syntax + "\\b");
-        Matcher matcher = pattern.matcher(text);
+        for (String syntax : syntaxs) {
+            Pattern pattern = Pattern.compile("\\b" + Pattern.quote(syntax) + "\\b");
+            Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
                 doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), style, false);
             }
