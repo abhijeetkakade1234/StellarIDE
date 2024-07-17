@@ -5,10 +5,10 @@ import javax.swing.event.DocumentListener;
 
 public class StellarIDE implements ActionListener {
     JMenuBar menuBar;
-    public JTextPane  editor;
-    JMenu file, edit, prettier, settingsMenu;
+    JMenu file ,edit ,settingsMenu, themes; 
     JFrame frame;
     JTabbedPane tabbedPane; 
+    Color backgroundColor = new Color(30, 30, 30); // Dark gray default background color
     
 
     public StellarIDE() {
@@ -24,15 +24,15 @@ public class StellarIDE implements ActionListener {
         // Add menus to the menu bar
         menuBar.add(file);
         menuBar.add(edit);
-        menuBar.add(prettier);
-        menuBar.add(settingsMenu, BorderLayout.SOUTH);
+        // menuBar.add(prettier);
+        menuBar.add(settingsMenu);
+        menuBar.add(themes);
         
         // Set the menu bar for the frame
         frame.setJMenuBar(menuBar);
         
         // Initialize the tabbed pane and add it to the center of the BorderLayout
         tabbedPane = new JTabbedPane();
-        editor = new JTextPane ();
         frame.add(tabbedPane, BorderLayout.CENTER);
         JPopupMenu popup = new JPopupMenu();
         JMenuItem closeTab = new JMenuItem("close tab");
@@ -60,12 +60,34 @@ public class StellarIDE implements ActionListener {
                 String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab", "File Name", JOptionPane.PLAIN_MESSAGE);
                 if (editorName != null && editorName.length() > 0) {
                     JTextPane newEditor = new JTextPane();
-                    newEditor.setBackground(new Color(30, 30, 30)); // Very dark gray, almost black
+                    newEditor.setBackground(backgroundColor); // Very dark gray, almost black
                     tabbedPane.add(editorName + ".java", newEditor);
                     addSyntaxHighlighting(newEditor);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Incorrect file name", "Alert", JOptionPane.WARNING_MESSAGE);
                 }
+            }
+            // Handle themes
+            case "Themes" -> { // TODO: create a method to switch themes here add down code in that
+                // Toggle between dark gray and white backgrounds
+                if (backgroundColor.equals(new Color(30, 30, 30))) {
+                    backgroundColor = Color.WHITE; // White background
+                    // themes = new JButton("White Mode");
+                } else {
+                    backgroundColor = new Color(30, 30, 30); // Dark gray background
+                    // themes = new JButton("Dark Mode");
+                }
+                
+                // Update background color of existing editors
+                for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                    Component comp = tabbedPane.getComponentAt(i);
+                    if (comp instanceof JTextPane editor) {
+                        editor.setBackground(backgroundColor);
+                    }
+                }
+                
+                // Repaint the frame to apply the new theme
+                frame.repaint();
             }
             // Handle open action
             case "Open" -> {
@@ -87,15 +109,20 @@ public class StellarIDE implements ActionListener {
         menuBar = new JMenuBar();
         file = new JMenu("File");
         edit = new JMenu("Edit");
-        prettier = new JMenu("Prettier");
+        // prettier = new JButton("Prettier");
         settingsMenu = new JMenu("Settings");
+        themes = new JMenu("Themes");
 
-        // Initialize menu items
+        // Initialize menu items for the File menu
         JMenuItem newTab = new JMenuItem("New Tab");
         JMenuItem open = new JMenuItem("Open");
         JMenuItem save = new JMenuItem("Save");
         JMenuItem saveAs = new JMenuItem("Save As");
         JMenuItem exit = new JMenuItem("Exit");
+
+        // Initialize menu items for the Theme menu
+        JMenuItem darkMode = new JMenuItem("Dark Mode");
+        JMenuItem whiteMode = new JMenuItem("White Mode");
 
         // Add menu items to the File menu
         file.add(newTab);
@@ -104,12 +131,18 @@ public class StellarIDE implements ActionListener {
         file.add(saveAs);  
         file.add(exit);
 
+        // Add menu items to the Theme menu
+        themes.add(darkMode);
+        themes.add(whiteMode);
+
         // Add action listeners to the menu items
         newTab.addActionListener(this);
         open.addActionListener(this);
         save.addActionListener(this);
         saveAs.addActionListener(this);
         exit.addActionListener(this);
+        darkMode.addActionListener(this);
+        whiteMode.addActionListener(this);
    }
 
    /**
