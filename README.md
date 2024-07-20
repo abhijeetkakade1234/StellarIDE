@@ -20,7 +20,7 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
 - **Themes**
   - Change the theme of the IDE. *(alpha testing)*
     - New themes can be added on request.
-    - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions/categories/ideas) section on GitHub.
+    - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions/categories/ideas) section.
 
 
 

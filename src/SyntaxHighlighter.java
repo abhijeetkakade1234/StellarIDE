@@ -9,7 +9,7 @@ import javax.swing.text.StyledDocument;
 public class SyntaxHighlighter{
     
     // Add a color for default text
-    private static final Color DEFAULT_TEXT_COLOR = new Color(212, 212, 212); // Light gray
+    public static Color DEFAULT_TEXT_COLOR = new Color(212, 212, 212); // Light gray
 
     // Existing patterns (they look good, no changes needed)
     private static final String[] keywords = {"abstract", "assert", "break", "case", "catch", "class", "const", "continue", "default", "do", "else", "enum", "extends", "final", "finally", "for", "goto", "if", "implements", "import", "instanceof", "interface", "native", "new", "null", "package", "private", "protected", "public", "return", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while"};

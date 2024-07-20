@@ -10,6 +10,7 @@ public class StellarIDE implements ActionListener {
     JTabbedPane tabbedPane; 
     Color backgroundColor = new Color(30, 30, 30); // Dark gray default background color
     JMenuItem darkMode, exit, lightMode, newTab, open, save, saveAs;
+    JScrollPane scrollPane;
 
     public StellarIDE() {
         frame = new JFrame("Stellar IDE");
@@ -69,7 +70,8 @@ public class StellarIDE implements ActionListener {
                     newEditor.setBackground(backgroundColor); // Very dark gray, almost black
 
                     // scroll bar for the new editor
-                    JScrollPane scrollPane = new JScrollPane(newEditor);
+                    scrollPane = new JScrollPane(newEditor);
+                    scrollPane.setOpaque(true);
                     scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
                     scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                     // Add the new editor to the tabbed pane
@@ -109,14 +111,19 @@ public class StellarIDE implements ActionListener {
         edit = new JMenu("Edit");
         // prettier = new JButton("Prettier");
         settingsMenu = new JMenu("Settings");
-        
         themes = new JMenu("Themes");
+        
+        
         // Initialize menu items for the File menu
         newTab = new JMenuItem("New Tab");
         open = new JMenuItem("Open");
         save = new JMenuItem("Save");
         saveAs = new JMenuItem("Save As");
         exit = new JMenuItem("Exit");
+
+        // TODO: Set the keyboard shortcut  
+        newTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK)); // new tab (Ctrl + N)
+        // TODO:ctr+ w to close tab
 
         // Initialize menu items for the Theme menu
         darkMode = new JMenuItem("Dark Mode");
@@ -130,9 +137,10 @@ public class StellarIDE implements ActionListener {
         file.add(exit);
 
         // Add menu items to the Theme menu
-        settingsMenu.add(themes);
         themes.add(darkMode);
         themes.add(lightMode);
+
+        settingsMenu.add(themes);
 
         // Add action listeners to the menu items
         newTab.addActionListener(this);
@@ -196,47 +204,104 @@ public class StellarIDE implements ActionListener {
      * @return         	void
      */
     private void applyTheme(Color backgroundColor, Color foregroundColor) {
-
         // Update the background and foreground colors of components
+        SyntaxHighlighter.DEFAULT_TEXT_COLOR = (backgroundColor.equals(Color.WHITE)) ? Color.BLACK : Color.WHITE; 
+        
+        menuBar.remove(settingsMenu); // Remove the menu
+        settingsMenu.remove(themes);  // Remove the themes menu
+
+        // Update the background and foreground colors of menus
         menuBar.setBackground(backgroundColor);
         menuBar.setForeground(foregroundColor);
-        settingsMenu.setBackground(backgroundColor);
-        settingsMenu.setForeground(foregroundColor);
-        themes.setBackground(backgroundColor);
-        themes.setForeground(foregroundColor);
-        tabbedPane.setBackground(backgroundColor);
-        tabbedPane.setForeground(foregroundColor);
-        file.setBackground(backgroundColor);
-        file.setForeground(foregroundColor);
-        edit.setBackground(backgroundColor);
-        edit.setForeground(foregroundColor);
-        newTab.setBackground(backgroundColor);
-        newTab.setForeground(foregroundColor);
-        open.setBackground(backgroundColor);
-        open.setForeground(foregroundColor);
-        save.setBackground(backgroundColor);
-        save.setForeground(foregroundColor);        
-        saveAs.setBackground(backgroundColor);
-        saveAs.setForeground(foregroundColor);
-        exit.setBackground(backgroundColor);
-        exit.setForeground(foregroundColor);
-        darkMode.setBackground(backgroundColor);
-        darkMode.setForeground(foregroundColor);
-        lightMode.setBackground(backgroundColor);
-        lightMode.setForeground(foregroundColor);
+        
+        // Update the settings menu and its items
+        updateMenuComponent(settingsMenu, backgroundColor, foregroundColor);
 
+        // Update the file menu and its items
+        updateMenuComponent(file, backgroundColor, foregroundColor);
+
+        // Update the edit menu and its items
+        updateMenuComponent(edit, backgroundColor, foregroundColor);
+        
+        // Update themes menu and its items
+        updateMenuComponent(themes, backgroundColor, foregroundColor);
+
+        // Update menu items
+        updateMenuItem(newTab, backgroundColor, foregroundColor);
+        updateMenuItem(open, backgroundColor, foregroundColor);
+        updateMenuItem(save, backgroundColor, foregroundColor);
+        updateMenuItem(saveAs, backgroundColor, foregroundColor);
+        updateMenuItem(exit, backgroundColor, foregroundColor);
+        updateMenuItem(darkMode, backgroundColor, foregroundColor);
+        updateMenuItem(lightMode, backgroundColor, foregroundColor);
+
+        // Re-add menus
+        settingsMenu.add(themes);
+        menuBar.add(settingsMenu);
 
         // Update the background color of the frame
         frame.setBackground(backgroundColor);
 
         // Apply the background color to all open tabs
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            JTextPane editor = (JTextPane) tabbedPane.getComponentAt(i);
-            editor.setBackground(backgroundColor);
+            this.scrollPane = (JScrollPane) tabbedPane.getComponentAt(i);
+            JViewport viewport = scrollPane.getViewport();
+            Component view = viewport.getView();
+            if (view instanceof JTextPane editor) {
+                editor.setBackground(backgroundColor);
+            }
         }
 
-        // Update the background color of new tabs and the frame
+        // Set the menu bar again
+        frame.setJMenuBar(menuBar);
+
+        // Update the UI *************************************
+        /* telling Swing to recalculate and 
+        redraw the entire UI tree for these components. 
+        This is particularly important for complex components 
+        like JMenus that have multiple layers and states. */
+        SwingUtilities.updateComponentTreeUI(menuBar);   
+        for (int i = 0; i < menuBar.getMenuCount(); i++) {
+            SwingUtilities.updateComponentTreeUI(menuBar.getMenu(i));
+        }
+
+        // Force components to repaint and revalidate
         frame.repaint();
         frame.revalidate();
+    }
+
+    /**
+     * Updates the background color and foreground color of the given JComponent and its children.
+     *
+     * @param  component        the JComponent to update
+     * @param  backgroundColor  the new background color
+     * @param  foregroundColor  the new foreground color
+     */
+    private void updateMenuComponent(JComponent component, Color backgroundColor, Color foregroundColor) {
+        component.setBackground(backgroundColor);
+        component.setForeground(foregroundColor);
+        if (component instanceof JMenu menu) {
+            menu.getPopupMenu().setBackground(backgroundColor);
+            menu.getPopupMenu().setForeground(foregroundColor);
+        }
+        for (Component child : component.getComponents()) {
+            if (child instanceof JComponent jComponent) {
+                updateMenuComponent(jComponent, backgroundColor, foregroundColor);
+            }
+        }
+    }
+    
+    /**
+     * A description of the entire Java function.
+     *
+     * @param  menuItem         description of parameter
+     * @param  backgroundColor  description of parameter
+     * @param  foregroundColor  description of parameter
+     * @return                 description of return value
+     */
+    private void updateMenuItem(JMenuItem menuItem, Color backgroundColor, Color foregroundColor) {
+        menuItem.setBackground(backgroundColor);
+        menuItem.setForeground(foregroundColor);
+        menuItem.updateUI();
     }
 }
