@@ -9,12 +9,12 @@ public class StellarIDE implements ActionListener {
     JFrame frame;
     JTabbedPane tabbedPane; 
     Color backgroundColor = new Color(30, 30, 30); // Dark gray default background color
-    JMenuItem darkMode, exit, lightMode, newTab, open, save, saveAs;
+    JMenuItem darkMode, exit, lightMode, newTab, open, save, saveAs, find, replace;
     JScrollPane scrollPane;
 
     public StellarIDE() {
         frame = new JFrame("Stellar IDE");
-        frame.setSize(500, 500);
+        frame.setSize(800, 800);
         frame.setVisible(true);
         frame.setTitle("StellarIDE");
         frame.setLayout(new BorderLayout());
@@ -39,6 +39,7 @@ public class StellarIDE implements ActionListener {
         JMenuItem closeTab = new JMenuItem("close tab");
         popup.add(closeTab);
         tabbedPane.setComponentPopupMenu(popup);
+        
         // Close tab Event Listener
         closeTab.addActionListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
@@ -46,6 +47,7 @@ public class StellarIDE implements ActionListener {
                 tabbedPane.remove(selectedIndex);
             }
         });
+        
         
         // Set default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +86,10 @@ public class StellarIDE implements ActionListener {
             // Handle themes
             case "Dark Mode" -> themeChange("dark");
             case "Light Mode" -> themeChange("light");
+            // Handle find
+            case "find" -> {}
+            // Handle find and replace
+            case "replace" -> {}
             // Handle open action
             case "Open" -> {
             }
@@ -104,7 +110,7 @@ public class StellarIDE implements ActionListener {
      * @param  None
      * @return         	void
      */
-    private  void initialize() {
+    private void initialize() {
         // Initialize the menu bar and menus
         menuBar = new JMenuBar();
         file = new JMenu("File");
@@ -121,9 +127,18 @@ public class StellarIDE implements ActionListener {
         saveAs = new JMenuItem("Save As");
         exit = new JMenuItem("Exit");
 
-        // TODO: Set the keyboard shortcut  
+        // Initialize menu items for the Edit menu
+        find = new JMenuItem("Find");
+        replace = new JMenuItem("Replace");
+
+        // Set the keyboard shortcut keys for the menu items.
         newTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK)); // new tab (Ctrl + N)
-        // TODO:ctr+ w to close tab
+        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); // open (Ctrl + O)
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK)); // exit (Ctrl + X)
+        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK)); // save (Ctrl + S)
+        saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)); // save as (Ctrl + Shift + S)
+        find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK)); // find (Ctrl + F)
+        replace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK)); // replace (Ctrl + R)
 
         // Initialize menu items for the Theme menu
         darkMode = new JMenuItem("Dark Mode");
@@ -135,6 +150,10 @@ public class StellarIDE implements ActionListener {
         file.add(save);
         file.add(saveAs);  
         file.add(exit);
+
+        // Add menu items to the Edit menu
+        edit.add(find);
+        edit.add(replace);
 
         // Add menu items to the Theme menu
         themes.add(darkMode);
@@ -150,6 +169,8 @@ public class StellarIDE implements ActionListener {
         exit.addActionListener(this);
         darkMode.addActionListener(this);
         lightMode.addActionListener(this);
+        find.addActionListener(this);
+        replace.addActionListener(this);
    }
 
    /**
@@ -234,6 +255,8 @@ public class StellarIDE implements ActionListener {
         updateMenuItem(exit, backgroundColor, foregroundColor);
         updateMenuItem(darkMode, backgroundColor, foregroundColor);
         updateMenuItem(lightMode, backgroundColor, foregroundColor);
+        updateMenuItem(find, backgroundColor, foregroundColor);
+        updateMenuItem(replace, backgroundColor, foregroundColor);
 
         // Re-add menus
         settingsMenu.add(themes);
