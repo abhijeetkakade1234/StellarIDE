@@ -10,7 +10,7 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
   - Autocomplete suggestions for Java syntax and common libraries. *(Not Started)*
   
 - **Syntax Highlighting**
-  - Clear and distinct highlighting for keywords, variables, and other code elements. *(Available beta feature)*
+  - Clear and distinct highlighting for keywords, variables, and other code elements. *(Available)*
   
 - **Project Management**
   - Organize and manage multiple Java projects with ease. *(comming soon)*
@@ -18,9 +18,12 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
 - **Built-in Terminal**
   - Access to a command-line interface directly within the IDE. *(comming soon)*
 - **Themes**
-  - Change the theme of the IDE. *(alpha testing)*
+  - Change the theme of the IDE. *(Available)*
     - New themes can be added on request.
     - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions/categories/ideas) section.
+- **Keyboard Shortcuts**
+  - Use keyboard shortcuts to enhance productivity. *(comming soon)*
+  
 
 
 
