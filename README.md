@@ -13,7 +13,7 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
   - Clear and distinct highlighting for keywords, variables, and other code elements. *(Available)*
   
 - **Project Management**
-  - Organize and manage multiple Java projects with ease. *(comming soon)*
+  - Organize and manage multiple Java projects with ease. *(coming soon)*
   
 - **Built-in Terminal**
   - Access to a command-line interface directly within the IDE. *(comming soon)*
@@ -22,7 +22,7 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
     - New themes can be added on request.
     - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions/categories/ideas) section.
 - **Keyboard Shortcuts**
-  - Use keyboard shortcuts to enhance productivity. *(comming soon)*
+  - Use keyboard shortcuts to enhance productivity. *(coming soon)*
   
 
 
@@ -68,7 +68,7 @@ We value your feedback and contributions. If you encounter any issues or have su
 
 ## License
 
-StellarIDE is licensed under the [MIT License](LICENSE).
+StellarIDE is licensed under the [GNU License](LICENSE).
 
 ---
 
