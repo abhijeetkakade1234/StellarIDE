@@ -87,9 +87,33 @@ public class StellarIDE implements ActionListener {
             case "Dark Mode" -> themeChange("dark");
             case "Light Mode" -> themeChange("light");
             // Handle find
-            case "find" -> {}
+            case "Find" -> {
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                if (selectedIndex > 0){
+                    JScrollPane selectedScrollPane = (JScrollPane) tabbedPane.getComponentAt(selectedIndex);
+                    JViewport viewport = selectedScrollPane.getViewport();
+                    JTextPane currentEditor = (JTextPane) viewport.getView();
+
+                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find", JOptionPane.OK_CANCEL_OPTION);
+                    if (findText != null && findText.length() > 0) {
+                        SearchAndHighlight.FindAndHighlight(currentEditor, findText);
+                    }
+                }
+            }
             // Handle find and replace
-            case "replace" -> {}
+            case "Replace" -> {
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                if (selectedIndex > 0){
+                    JScrollPane selectedScrollPane = (JScrollPane) tabbedPane.getComponentAt(selectedIndex);
+                    JViewport viewport = selectedScrollPane.getViewport();
+                    JTextPane currentEditor = (JTextPane) viewport.getView();
+                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find", JOptionPane.OK_CANCEL_OPTION);
+                    String replaceText = JOptionPane.showInputDialog(frame, "Replace with the word", "Replace", JOptionPane.PLAIN_MESSAGE);
+                    if (findText != null && findText.length() > 0) {
+                        SearchAndHighlight.SearchHighlightAndReplace(currentEditor, findText, replaceText);
+                    }
+                }
+            }
             // Handle open action
             case "Open" -> {
             }
@@ -99,10 +123,11 @@ public class StellarIDE implements ActionListener {
             // Handle save as action
             case "Save As" -> {
             }
+            // save and exit is remaining
             case "Exit" -> frame.dispose(); // Close the application
             default -> {} // Do nothing
         }
-    }
+    } 
 
     /**
      * Initialize the menu bar, menus, and menu items.

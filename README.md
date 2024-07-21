@@ -22,7 +22,7 @@ Welcome to **StellarIDE** – your new go-to Java Integrated Development Environ
     - New themes can be added on request.
     - For any theme suggestions, please go to the [Discussions](https://github.com/abhijeetkakade1234/StellarIDE/discussions/categories/ideas) section.
 - **Keyboard Shortcuts**
-  - Use keyboard shortcuts to enhance productivity. *(coming soon)*
+  - Use keyboard shortcuts to enhance productivity. *(Available)*
   
 
 

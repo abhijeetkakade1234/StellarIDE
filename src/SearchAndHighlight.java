@@ -1,7 +1,12 @@
-public class SearchAndHighlight {
-    public void FindAndHighlight() {}
+import javax.swing.JTextPane; 
 
-    public void SearchHighlightAndReplace() {}
+
+public class SearchAndHighlight {
+    public static void FindAndHighlight(JTextPane textPane, String text) {
+        
+    }
+
+    public static void SearchHighlightAndReplace(JTextPane textPane ,String findtext, String replaceText) {}
 
 }
 // TODO: implement find, search and highlight
