@@ -5,9 +5,9 @@ import javax.swing.event.DocumentListener;
 
 public class StellarIDE implements ActionListener {
     JMenuBar menuBar;
-    JMenu file ,edit ,settingsMenu, themes; 
+    JMenu file, edit, settingsMenu, themes;
     JFrame frame;
-    JTabbedPane tabbedPane; 
+    JTabbedPane tabbedPane;
     Color backgroundColor = new Color(30, 30, 30); // Dark gray default background color
     JMenuItem darkMode, exit, lightMode, newTab, open, save, saveAs, find, replace;
     JScrollPane scrollPane;
@@ -21,17 +21,16 @@ public class StellarIDE implements ActionListener {
 
         // intialize the menu bar
         initialize();
-        
+
         // Add menus to the menu bar
         menuBar.add(file);
         menuBar.add(edit);
         // menuBar.add(prettier);
         menuBar.add(settingsMenu);
-        
-        
+
         // Set the menu bar for the frame
         frame.setJMenuBar(menuBar);
-        
+
         // Initialize the tabbed pane and add it to the center of the BorderLayout
         tabbedPane = new JTabbedPane();
         frame.add(tabbedPane, BorderLayout.CENTER);
@@ -39,7 +38,7 @@ public class StellarIDE implements ActionListener {
         JMenuItem closeTab = new JMenuItem("close tab");
         popup.add(closeTab);
         tabbedPane.setComponentPopupMenu(popup);
-        
+
         // Close tab Event Listener
         closeTab.addActionListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
@@ -47,8 +46,7 @@ public class StellarIDE implements ActionListener {
                 tabbedPane.remove(selectedIndex);
             }
         });
-        
-        
+
         // Set default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -57,8 +55,8 @@ public class StellarIDE implements ActionListener {
     /**
      * A method to handle various actions based on the action event triggered.
      *
-     * @param  e   the action event that occurred
-     * @return     void, no return value
+     * @param e the action event that occurred
+     * @return void, no return value
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -66,7 +64,8 @@ public class StellarIDE implements ActionListener {
         // using ruleswitch which was released in Java 17
         switch (source.getText()) {
             case "New Tab" -> {
-                String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab", "File Name", JOptionPane.PLAIN_MESSAGE);
+                String editorName = JOptionPane.showInputDialog(frame, "Save the file before creating a new tab",
+                        "File Name", JOptionPane.PLAIN_MESSAGE);
                 if (editorName != null && editorName.length() > 0) {
                     JTextPane newEditor = new JTextPane();
                     newEditor.setBackground(backgroundColor); // Very dark gray, almost black
@@ -75,7 +74,8 @@ public class StellarIDE implements ActionListener {
                     scrollPane = new JScrollPane(newEditor);
                     scrollPane.setOpaque(true);
                     scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-                    scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollPane.setHorizontalScrollBarPolicy(
+                            javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                     // Add the new editor to the tabbed pane
                     tabbedPane.add(editorName + ".java", scrollPane);
                     addSyntaxHighlighting(newEditor);
@@ -89,29 +89,44 @@ public class StellarIDE implements ActionListener {
             // Handle find
             case "Find" -> {
                 int selectedIndex = tabbedPane.getSelectedIndex();
-                if (selectedIndex > 0){
+                if (selectedIndex >= 0) {
                     JScrollPane selectedScrollPane = (JScrollPane) tabbedPane.getComponentAt(selectedIndex);
                     JViewport viewport = selectedScrollPane.getViewport();
                     JTextPane currentEditor = (JTextPane) viewport.getView();
 
-                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find", JOptionPane.OK_CANCEL_OPTION);
+                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find",
+                            JOptionPane.OK_CANCEL_OPTION);
                     if (findText != null && findText.length() > 0) {
-                        SearchAndHighlight.FindAndHighlight(currentEditor, findText);
+                        SearchAndHighlight.findAndHighlight(currentEditor, findText);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "No text found!", "Alert", JOptionPane.WARNING_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No tab is currently open.", "Alert",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
             // Handle find and replace
             case "Replace" -> {
                 int selectedIndex = tabbedPane.getSelectedIndex();
-                if (selectedIndex > 0){
+                if (selectedIndex >= 0) {
                     JScrollPane selectedScrollPane = (JScrollPane) tabbedPane.getComponentAt(selectedIndex);
                     JViewport viewport = selectedScrollPane.getViewport();
                     JTextPane currentEditor = (JTextPane) viewport.getView();
-                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find", JOptionPane.OK_CANCEL_OPTION);
-                    String replaceText = JOptionPane.showInputDialog(frame, "Replace with the word", "Replace", JOptionPane.PLAIN_MESSAGE);
+
+                    String findText = JOptionPane.showInputDialog(frame, "Find the word", "Find",
+                            JOptionPane.OK_CANCEL_OPTION);
+                    String replaceText = JOptionPane.showInputDialog(frame, "Replace with the word", "Replace",
+                            JOptionPane.PLAIN_MESSAGE);
+
                     if (findText != null && findText.length() > 0) {
-                        SearchAndHighlight.SearchHighlightAndReplace(currentEditor, findText, replaceText);
+                        SearchAndHighlight.searchHighlightAndReplace(currentEditor, findText, replaceText);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "No text found!", "Alert", JOptionPane.WARNING_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No tab is currently open.", "Alert",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
             // Handle open action
@@ -125,15 +140,16 @@ public class StellarIDE implements ActionListener {
             }
             // save and exit is remaining
             case "Exit" -> frame.dispose(); // Close the application
-            default -> {} // Do nothing
+            default -> {
+            } // Do nothing
         }
-    } 
+    }
 
     /**
      * Initialize the menu bar, menus, and menu items.
      *
-     * @param  None
-     * @return         	void
+     * @param None
+     * @return void
      */
     private void initialize() {
         // Initialize the menu bar and menus
@@ -143,8 +159,7 @@ public class StellarIDE implements ActionListener {
         // prettier = new JButton("Prettier");
         settingsMenu = new JMenu("Settings");
         themes = new JMenu("Themes");
-        
-        
+
         // Initialize menu items for the File menu
         newTab = new JMenuItem("New Tab");
         open = new JMenuItem("Open");
@@ -173,7 +188,7 @@ public class StellarIDE implements ActionListener {
         file.add(newTab);
         file.add(open);
         file.add(save);
-        file.add(saveAs);  
+        file.add(saveAs);
         file.add(exit);
 
         // Add menu items to the Edit menu
@@ -196,21 +211,26 @@ public class StellarIDE implements ActionListener {
         lightMode.addActionListener(this);
         find.addActionListener(this);
         replace.addActionListener(this);
-   }
+    }
 
-   /**
-    * Add syntax highlighting to the editor
-    *
-    * @param  textPane	JTextPane to apply syntax highlighting
-    * @return         	void
-    */
-   private void addSyntaxHighlighting(JTextPane textPane) {
-    // Add syntax highlighting to the editor
+    /**
+     * Add syntax highlighting to the editor
+     *
+     * @param textPane JTextPane to apply syntax highlighting
+     * @return void
+     */
+    private void addSyntaxHighlighting(JTextPane textPane) {
+        // Add syntax highlighting to the editor
         textPane.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
                 SwingUtilities.invokeLater(() -> SyntaxHighlighter.applySyntaxHighlight(textPane));
+
+                /* when any key is pressed then this will not highlight word but 
+                if any word was previosly highlighted then it will be removed 
+                Text here use is Alt + 455 which is non visible  word as no will be using this character */ 
+                SearchAndHighlight.findAndHighlight(textPane, "╟");
             }
 
             @Override
@@ -220,13 +240,15 @@ public class StellarIDE implements ActionListener {
 
             @Override
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
-                // Not needed for plain text components
+                // this could solve the delay in syntax highlighting
+                // not this ->>> SwingUtilities.invokeLater(() -> SyntaxHighlighter.applySyntaxHighlight(textPane));
             }
         });
-    } 
+    }
 
     /**
-     * Apply the selected theme to the IDE, changing the background color of all tabs.
+     * Apply the selected theme to the IDE, changing the background color of all
+     * tabs.
      *
      * @param theme the theme to apply ("dark" or "white")
      */
@@ -235,31 +257,32 @@ public class StellarIDE implements ActionListener {
             case "dark" -> {
                 applyTheme(new Color(30, 30, 30), Color.WHITE);
             }
-            case "light" ->{
+            case "light" -> {
                 applyTheme(Color.WHITE, Color.BLACK);
-            } 
-            default -> {} // Do nothing
+            }
+            default -> {
+            } // Do nothing
         }
     }
 
     /**
      * Update the background and foreground colors of components
      *
-     * @param  backgroundColor	Color for the background
-     * @param  foregroundColor	Color for the foreground
-     * @return         	void
+     * @param backgroundColor Color for the background
+     * @param foregroundColor Color for the foreground
+     * @return void
      */
     private void applyTheme(Color backgroundColor, Color foregroundColor) {
         // Update the background and foreground colors of components
-        SyntaxHighlighter.DEFAULT_TEXT_COLOR = (backgroundColor.equals(Color.WHITE)) ? Color.BLACK : Color.WHITE; 
-        
+        SyntaxHighlighter.DEFAULT_TEXT_COLOR = (backgroundColor.equals(Color.WHITE)) ? Color.BLACK : Color.WHITE;
+
         menuBar.remove(settingsMenu); // Remove the menu
-        settingsMenu.remove(themes);  // Remove the themes menu
+        settingsMenu.remove(themes); // Remove the themes menu
 
         // Update the background and foreground colors of menus
         menuBar.setBackground(backgroundColor);
         menuBar.setForeground(foregroundColor);
-        
+
         // Update the settings menu and its items
         updateMenuComponent(settingsMenu, backgroundColor, foregroundColor);
 
@@ -268,7 +291,7 @@ public class StellarIDE implements ActionListener {
 
         // Update the edit menu and its items
         updateMenuComponent(edit, backgroundColor, foregroundColor);
-        
+
         // Update themes menu and its items
         updateMenuComponent(themes, backgroundColor, foregroundColor);
 
@@ -304,11 +327,13 @@ public class StellarIDE implements ActionListener {
         frame.setJMenuBar(menuBar);
 
         // Update the UI *************************************
-        /* telling Swing to recalculate and 
-        redraw the entire UI tree for these components. 
-        This is particularly important for complex components 
-        like JMenus that have multiple layers and states. */
-        SwingUtilities.updateComponentTreeUI(menuBar);   
+        /*
+         * telling Swing to recalculate and
+         * redraw the entire UI tree for these components.
+         * This is particularly important for complex components
+         * like JMenus that have multiple layers and states.
+         */
+        SwingUtilities.updateComponentTreeUI(menuBar);
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             SwingUtilities.updateComponentTreeUI(menuBar.getMenu(i));
         }
@@ -319,11 +344,12 @@ public class StellarIDE implements ActionListener {
     }
 
     /**
-     * Updates the background color and foreground color of the given JComponent and its children.
+     * Updates the background color and foreground color of the given JComponent and
+     * its children.
      *
-     * @param  component        the JComponent to update
-     * @param  backgroundColor  the new background color
-     * @param  foregroundColor  the new foreground color
+     * @param component       the JComponent to update
+     * @param backgroundColor the new background color
+     * @param foregroundColor the new foreground color
      */
     private void updateMenuComponent(JComponent component, Color backgroundColor, Color foregroundColor) {
         component.setBackground(backgroundColor);
@@ -338,14 +364,14 @@ public class StellarIDE implements ActionListener {
             }
         }
     }
-    
+
     /**
      * A description of the entire Java function.
      *
-     * @param  menuItem         description of parameter
-     * @param  backgroundColor  description of parameter
-     * @param  foregroundColor  description of parameter
-     * @return                 description of return value
+     * @param menuItem        description of parameter
+     * @param backgroundColor description of parameter
+     * @param foregroundColor description of parameter
+     * @return description of return value
      */
     private void updateMenuItem(JMenuItem menuItem, Color backgroundColor, Color foregroundColor) {
         menuItem.setBackground(backgroundColor);

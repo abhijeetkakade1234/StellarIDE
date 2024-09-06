@@ -6,6 +6,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+// this class is working but not as we wanted!!!!!!!!!!!!!!!!!!!
+// BUG: Fix required after first line syntax highlighting is improper
 public class SyntaxHighlighter{
     
     // Add a color for default text
@@ -46,12 +48,12 @@ public class SyntaxHighlighter{
         // Apply styles in the correct order && Colors for syntax highlighting
         
        
-        applyStyles(doc, text, keywords, new Color(197, 134, 192)); // Soft purple
-        applyStyles(doc, text, dataTypes, new Color(86, 156, 214)); // Bright blue
-        applyStyles(doc, text, nonPrimitiveTypes, new Color(78, 201, 176)); // Cyan
-        applyStyles(doc, text, collectionClasses, new Color(220, 220, 170)); // Pale yellow
-        applyStyles(doc, text, booleanLiterals, new Color(236, 118, 0)); // Orange
-        applyStyles(doc, text, logicalOperators, new Color(255, 123, 114)); // Soft coral
+        applyStyles(doc, text, keywords, new Color(197, 134, 192), textPane); // Soft purple
+        applyStyles(doc, text, dataTypes, new Color(86, 156, 214), textPane); // Bright blue
+        applyStyles(doc, text, nonPrimitiveTypes, new Color(78, 201, 176), textPane); // Cyan
+        applyStyles(doc, text, collectionClasses, new Color(220, 220, 170), textPane); // Pale yellow
+        applyStyles(doc, text, booleanLiterals, new Color(236, 118, 0), textPane); // Orange
+        applyStyles(doc, text, logicalOperators, new Color(255, 123, 114), textPane); // Soft coral
         
 
         // Repaint the text pane
@@ -66,7 +68,7 @@ public class SyntaxHighlighter{
      * @param  pattern the pattern to match in the text
      * @param  color   the color to set for the matched pattern
      */
-     private static void applyStyles(StyledDocument doc, String text, String[] syntaxs, Color color) {
+     private static void applyStyles(StyledDocument doc, String text, String[] syntaxs, Color color, JTextPane textPane) {
         Style style = doc.addStyle("customStyle", null);
         StyleConstants.setForeground(style, color);
 
@@ -75,6 +77,8 @@ public class SyntaxHighlighter{
             Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
                 doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), style, false);
+                textPane.repaint();
+                textPane.revalidate();
             }
         }
     }
