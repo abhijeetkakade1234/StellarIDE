@@ -7,10 +7,13 @@ public class StellarIDE implements ActionListener {
     JMenuBar menuBar;
     JMenu file, edit, settingsMenu, themes;
     JFrame frame;
-    JTabbedPane tabbedPane;
+    public static JTabbedPane tabbedPane;
     Color backgroundColor = new Color(30, 30, 30); // Dark gray default background color
     JMenuItem darkMode, exit, lightMode, newTab, open, save, saveAs, find, replace;
     JScrollPane scrollPane;
+
+    // File browser component00
+    FileSystem fileSystem;
 
     public StellarIDE() {
         frame = new JFrame("Stellar IDE");
@@ -118,12 +121,13 @@ public class StellarIDE implements ActionListener {
                             JOptionPane.OK_CANCEL_OPTION);
                     String replaceText = JOptionPane.showInputDialog(frame, "Replace with the word", "Replace",
                             JOptionPane.PLAIN_MESSAGE);
-
-                    if (findText != null && findText.length() > 0) {
+                    // if findText and replaceText are not null and not equal
+                    if (!findText.equals(replaceText) && findText.length() > 0) {
                         SearchAndHighlight.searchHighlightAndReplace(currentEditor, findText, replaceText);
                     } else {
-                        JOptionPane.showMessageDialog(frame, "No text found!", "Alert", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, "No text found! Or word your looking for is the same", "Alert", JOptionPane.WARNING_MESSAGE);
                     }
+
                 } else {
                     JOptionPane.showMessageDialog(frame, "No tab is currently open.", "Alert",
                             JOptionPane.WARNING_MESSAGE);
@@ -131,6 +135,7 @@ public class StellarIDE implements ActionListener {
             }
             // Handle open action
             case "Open" -> {
+                fileSystem = new FileSystem();
             }
             // Handle save action
             case "Save" -> {
@@ -170,6 +175,9 @@ public class StellarIDE implements ActionListener {
         // Initialize menu items for the Edit menu
         find = new JMenuItem("Find");
         replace = new JMenuItem("Replace");
+
+        // Create file browser
+  
 
         // Set the keyboard shortcut keys for the menu items.
         newTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK)); // new tab (Ctrl + N)
@@ -219,7 +227,7 @@ public class StellarIDE implements ActionListener {
      * @param textPane JTextPane to apply syntax highlighting
      * @return void
      */
-    private void addSyntaxHighlighting(JTextPane textPane) {
+    public static void addSyntaxHighlighting(JTextPane textPane) {
         // Add syntax highlighting to the editor
         textPane.getDocument().addDocumentListener(new DocumentListener() {
 

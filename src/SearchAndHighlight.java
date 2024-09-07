@@ -39,23 +39,19 @@ public class SearchAndHighlight {
      * @param findText  the text to search for and highlight
      * @param replaceText the text to replace with
      * @return          void, no return value
-     */
-
-    /* BUG: Its finding the text form findAndHighlight method and has the 
-    count of the text but it does not replace the text instead add the replaceText
-    number of time text is found */
+     */ 
+    // BUG: Kind of working but not as wanted !!!!!!!!!!!!!!!!!!!!!
     public static void searchHighlightAndReplace(JTextPane textPane, String findText, String replaceText) {
-        // first find the text and highlight it
-        findAndHighlight(textPane, findText);
-
-        // then replace the text
-        String textContent = textPane.getText();
-        int index = 0;
-        while ((index = textContent.indexOf(findText, index)) != -1) {
-            int end = index + findText.length();
-            textPane.replaceSelection(replaceText);
-            index = end;
-        }
+        try {
+            String textContent = textPane.getText();
+            int index = 0;
+            while ((index = textContent.indexOf(findText, index)) != -1) {
+                int end = index + findText.length();
+                textPane.getHighlighter().addHighlight(index, end, painter);
+                textPane.getDocument().remove(index, findText.length());
+                textPane.getDocument().insertString(index, replaceText, null);
+                index += replaceText.length();
+            }
+        } catch (BadLocationException e) {}
     }
-
 }
