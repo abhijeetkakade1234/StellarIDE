@@ -21,6 +21,7 @@ public class StellarIDE implements ActionListener {
         frame.setVisible(true);
         frame.setTitle("StellarIDE");
         frame.setLayout(new BorderLayout());
+        // frame.add(FileTree.filetreePanel, BorderLayout.LINE_START);
 
         // intialize the menu bar
         initialize();
@@ -187,6 +188,7 @@ public class StellarIDE implements ActionListener {
         saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)); // save as (Ctrl + Shift + S)
         find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK)); // find (Ctrl + F)
         replace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK)); // replace (Ctrl + R)
+
 
         // Initialize menu items for the Theme menu
         darkMode = new JMenuItem("Dark Mode");

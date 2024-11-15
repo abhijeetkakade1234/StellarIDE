@@ -38,8 +38,8 @@ public class FileSystem {
                 scrollPane.setHorizontalScrollBarPolicy(
                 javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 
-                // Add the new TextPane to the tabbed pane in Stellarium IDE
-                // Assuming you have a reference to the tabbedPane in Stellarium IDE
+                // Add the new TextPane to the tabbed pane in Stellar IDE
+                // Assuming you have a reference to the tabbedPane in Stellar IDE
                 StellarIDE.tabbedPane.add(selectedFile.getName(), scrollPane);
                 SyntaxHighlighter.applySyntaxHighlight(newEditor);
                 SwingUtilities.invokeLater(() -> StellarIDE.addSyntaxHighlighting(newEditor));
